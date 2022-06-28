@@ -1,6 +1,7 @@
 import pytest
 
 from src.stylib import common, config
+from src.stylib.common import isword
 
 
 @pytest.mark.parametrize('text', ['This is a parsing test', 'ἐν ἀρχῇ ἐποίησεν ὁ θεὸσ τὸν'])
@@ -22,3 +23,8 @@ def test_greek_model(text):
     doc = model.nlp(text)
     for token1, token2 in zip(doc, text.split()):
         assert token1.text == token2
+
+
+@pytest.mark.parametrize('word, val', [('test', True), ('99', True), ('-100', True)])
+def test_is_word(word: str, val: bool):
+    assert isword(word) == val
