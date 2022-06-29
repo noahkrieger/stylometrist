@@ -1,10 +1,13 @@
 from unicodedata import combining
+import re
 
 import spacy
 
 import config as cnf
 
 registry = {}
+
+NUMBER_PATTERN = r'^[+-]{0,1}\d+\.{0,1}\d*$'
 
 
 class Model(object):
@@ -39,10 +42,13 @@ def isword(word: str) -> bool:
       signs.  May need to be refined for languages other than English """
     if word.isalnum():
         return True
-    if word.startswith('-') and ''.join(word[1:]).isalnum():
-        return True
-    if word.startswith('+') and ''.join(word[1:]).isalnum():
+    if re.match(NUMBER_PATTERN, word):
         return True
     if all(w.isalnum() or combining(w) > 0 for w in word):
         return True
     return False
+
+
+def wordlen(word: str) -> int:
+    """ Length of a word excluding combining characters (diacritics)"""
+    return len([w for w in word if w.isalnum() and not combining(w)])
