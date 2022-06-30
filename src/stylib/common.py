@@ -1,3 +1,5 @@
+from collections import Counter
+from typing import List, Tuple
 from unicodedata import combining
 import re
 
@@ -52,3 +54,13 @@ def isword(word: str) -> bool:
 def wordlen(word: str) -> int:
     """ Length of a word excluding combining characters (diacritics)"""
     return len([w for w in word if w.isalnum() and not combining(w)])
+
+
+def sentence_length(sent: spacy.tokens.doc.Doc):
+    return len([t.text for t in sent if isword(t.text)])
+
+
+def distribution(dist: Counter) -> List[Tuple[int, float]]:
+    n = sum(dist.values())
+    return [(k, v / n) for k, v in dist.items()]
+
