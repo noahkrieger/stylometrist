@@ -1,7 +1,7 @@
 import pytest
 
 from src.stylib import common, config
-from src.stylib.common import isword, wordlen
+from src.stylib.common import isword, word_length, sentence_length_in_characters
 
 
 @pytest.mark.parametrize('text', ['This is a parsing test', 'ἐν ἀρχῇ ἐποίησεν ὁ θεὸσ τὸν'])
@@ -33,5 +33,16 @@ def test_isword(word: str, val: bool):
 
 
 @pytest.mark.parametrize('word, val', [('test', 4), ('99', 2), ('-100', 3), ('ἐποίησεν', 8)])
-def test_wordlen(word: str, val: bool):
-    assert wordlen(word) == val
+def test_word_length(word: str, val: bool):
+    assert word_length(word) == val
+
+
+@pytest.mark.parametrize('sent, val, excl', [('This is a test', 14, True), ('This is a test.', 14, True),
+                                       ('This is a test!!!', 14, True), ('This is a test?', 14, True),
+                                       ('This is a test.\n', 14, True), ('This is a test...!?', 14, True),
+                                       ('T.h.i.s. is a test.', 18, True), ('This is a test...!?', 14, False),
+                                       ('ἐν ἀρχῇ ἐποίησεν ὁ θεὸσ τὸν', 27, True),
+                                       ('ἐν ἀρχῇ ἐποίησεν ὁ θεὸσ τὸν', 36, False)
+                                       ])
+def test_sentence_length_in_characters(sent: str, val: int, excl: bool):
+    assert sentence_length_in_characters(sent, exclude_combining=excl) == val

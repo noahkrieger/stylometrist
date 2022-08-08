@@ -9,7 +9,8 @@ import config as cnf
 
 registry = {}
 
-NUMBER_PATTERN = r'^[+-]{0,1}\d+\.{0,1}\d*$'
+NUMBER_PATTERN = re.compile(r'^[+-]{0,1}\d+\.{0,1}\d*$')
+SENTENCE_ENDING_PATTERN = re.compile('^(.*?)[.!? \n]*$')
 
 
 class Model(object):
@@ -44,23 +45,48 @@ def isword(word: str) -> bool:
       signs.  May need to be refined for languages other than English """
     if word.isalnum():
         return True
-    if re.match(NUMBER_PATTERN, word):
+    if NUMBER_PATTERN.match(word):
         return True
     if all(w.isalnum() or combining(w) > 0 for w in word):
         return True
     return False
 
 
-def wordlen(word: str) -> int:
-    """ Length of a word excluding combining characters (diacritics)"""
-    return len([w for w in word if w.isalnum() and not combining(w)])
+def word_length(string: str, exclude_combining: bool = True) -> int:
+    """ Length of a word, with or without combining characters (diacritics).
+    A word is a 'continuous string of graphemes and/or digits.' (Grieve, 2007) """
+    if exclude_combining:
+        return len([s for s in string if s.isalnum() and not combining(s)])
+    else:
+        return len([s for s in string if s.isalnum()])
 
 
-def sentence_length(sent: spacy.tokens.doc.Doc):
+def sentence_length_in_words(sent: spacy.tokens.doc.Doc):
+    """ Length of a sentence in words. """
     return len([t.text for t in sent if isword(t.text)])
 
 
 def distribution(dist: Counter) -> List[Tuple[int, float]]:
     n = sum(dist.values())
     return [(k, v / n) for k, v in dist.items()]
+
+
+def string_length(string: str, exclude_combining: bool = True) -> int:
+    """ Length of a string, with or without combining characters (diacritics).  """
+    pass
+
+
+def sentence_length_in_characters(sent: str, exclude_combining: bool = True) -> int:
+    """ Length of a sentence in characters.  Excludes question marks, exclamation marks, newlines,
+    and nonabbreviatory periods. (Grieve, 2007) """
+
+    # TODO: Add support for right to left languages and better handling of terminating punctuation
+
+    text = SENTENCE_ENDING_PATTERN.search(sent).group(1)
+    if exclude_combining:
+        text = [t for t in text if not combining(t)]
+    return len(text)
+
+
+
 

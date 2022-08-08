@@ -3,10 +3,10 @@ import pytest
 from src.stylib import textual_measurements
 from src.stylib.common import registry
 from src.stylib.textual_measurements import average_word_length, word_length_distribution, \
-    average_sentence_length_in_words, sentence_length_in_words_distribution
+    average_sentence_length_in_words, sentence_length_in_words_distribution, average_sentence_length_in_characters
 
 
-@pytest.mark.parametrize('text', ['This is a parsing test', 'ἐν ἀρχῇ ἐποίησεν ὁ θεὸσ'])
+@pytest.mark.parametrize('text', ['This is a parsing test', 'ἐν ἀρχῇ ἐποίησεν ὁ θεὸσ', 'בְּרֵאשִׁית, בָּרָא אֱלֹהִים, אֵת הַשָּׁמַיִם'])
 def test_word_count(text):
     assert textual_measurements.word_count(text) == 5
     assert registry['word_count']
@@ -36,3 +36,15 @@ def test_sentence_length_in_words_distribution():
     print(dist)
     assert dist == [(5, 0.3333333333333333), (4, 0.3333333333333333), (3, 0.3333333333333333)]
     assert sum(v for _, v in dist) == 1
+
+
+def test_average_sentence_length_in_characters_combining():
+    text = 'This is the first sentence. This is another sentence. ἐν ἀρχῇ ἐποίησεν.'
+    avg_sentence_len = average_sentence_length_in_characters(text, exclude_combining=True)
+    assert avg_sentence_len == 22
+
+
+def test_average_sentence_length_in_characters_non_combining():
+    text = 'This is the first sentence. This is another sentence. ἐν ἀρχῇ ἐποίησεν.'
+    avg_sentence_len = average_sentence_length_in_characters(text, exclude_combining=False)
+    assert avg_sentence_len == 24
