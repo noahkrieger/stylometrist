@@ -10,7 +10,7 @@ import config as cnf
 registry = {}
 
 NUMBER_PATTERN = re.compile(r'^[+-]{0,1}\d+\.{0,1}\d*$')
-SENTENCE_ENDING_PATTERN = re.compile('^(.*?)[.!? \n]*$')
+SENTENCE_ENDING_PATTERN = re.compile('^[¿¡]{0,1}(.*?)[.!? \n]*$')
 
 
 class Model(object):
@@ -71,16 +71,22 @@ def distribution(dist: Counter) -> List[Tuple[int, float]]:
     return [(k, v / n) for k, v in dist.items()]
 
 
+def range_distribution(dist: Counter) -> List[Tuple[int, int, float]]:
+    n = sum(dist.values())
+    return [(f, t, v / n) for (f, t), v in dist.items()]
+
+
 def string_length(string: str, exclude_combining: bool = True) -> int:
     """ Length of a string, with or without combining characters (diacritics).  """
     pass
 
 
 def sentence_length_in_characters(sent: str, exclude_combining: bool = True) -> int:
-    """ Length of a sentence in characters.  Excludes question marks, exclamation marks, newlines,
-    and nonabbreviatory periods. (Grieve, 2007) """
+    """ Length of a sentence in characters.  Excludes question marks, exclamation points, newlines,
+    and nonabbreviatory periods. (Grieve, 2007) An attempt has been made to handle left to right
+    languages and upside down question marks and exclamation points.  Needs further testing """
 
-    # TODO: Add support for right to left languages and better handling of terminating punctuation
+    # TODO: Improve implementation for better support of non-English languages
 
     text = SENTENCE_ENDING_PATTERN.search(sent).group(1)
     if exclude_combining:

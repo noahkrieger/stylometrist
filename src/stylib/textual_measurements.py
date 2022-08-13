@@ -4,7 +4,7 @@ from typing import List, Tuple
 import numpy as np
 
 from src.stylib.common import Text, isword, word_length, sentence_length_in_words, distribution, \
-    sentence_length_in_characters
+    sentence_length_in_characters, range_distribution
 from src.stylib.decorators import measurement
 
 
@@ -52,7 +52,7 @@ def average_sentence_length_in_words(text: Text) -> float:
 @measurement
 def sentence_length_in_words_distribution(text: Text, min_length: int = 1,
                                           max_length: int = 100) -> List[Tuple[int, float]]:
-    """ Returns the distribution of sentence word lengths, rounded to the integer.  Only includes
+    """ Returns the distribution of sentence word lengths.  Only includes
     sentence lengths in words that are greater than or equal to the min length and less than the
     max length. """
     dist = Counter()
@@ -74,5 +74,18 @@ def average_sentence_length_in_characters(text: Text, exclude_combining: bool = 
     return np.mean(chars)
 
 
-
+@measurement
+def sentence_length_in_characters_distribution(text: Text, min_length: int = 1, max_length: int = 100_000,
+                                               interval: int = 1,
+                                               exclude_combining: bool = True) -> List[Tuple[int, int, float]]:
+    """ Returns a distribution of sentence lengths in characters.  Only includes sentence lengths in
+    characters that are greater than or equal to the min length and less than the max length. Interval determines
+    the character range of each bucket in the distribution (i.e, an interval of 10 results in buckets of
+    1 to 10, 11 to 20, etc."""
+    dist = Counter()
+    for sent in text.nlp().sents:
+        slen = sentence_length_in_characters(sent.text, exclude_combining)
+        if min_length <= slen < max_length:
+            dist[(slen//interval * interval + 1, (slen//interval + 1) * interval)] += 1
+    return range_distribution(dist)
 

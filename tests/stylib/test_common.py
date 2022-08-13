@@ -38,11 +38,18 @@ def test_word_length(word: str, val: bool):
 
 
 @pytest.mark.parametrize('sent, val, excl', [('This is a test', 14, True), ('This is a test.', 14, True),
-                                       ('This is a test!!!', 14, True), ('This is a test?', 14, True),
-                                       ('This is a test.\n', 14, True), ('This is a test...!?', 14, True),
-                                       ('T.h.i.s. is a test.', 18, True), ('This is a test...!?', 14, False),
-                                       ('ἐν ἀρχῇ ἐποίησεν ὁ θεὸσ τὸν', 27, True),
-                                       ('ἐν ἀρχῇ ἐποίησεν ὁ θεὸσ τὸν', 36, False)
-                                       ])
+                                             ('This is a test!!!', 14, True), ('This is a test?', 14, True),
+                                             ('This is a test.\n', 14, True), ('This is a test...!?', 14, True),
+                                             ('T.h.i.s. is a test.', 18, True), ('This is a test...!?', 14, False),
+                                             ('ἐν ἀρχῇ ἐποίησεν ὁ θεὸσ τὸν', 27, True),
+                                             ('ἐν ἀρχῇ ἐποίησεν ὁ θεὸσ τὸν', 36, False),
+                                             ('בְּרֵאשִׁית, בָּרָא אֱלֹהִים, אֵת הַשָּׁמַיִם, וְאֵת הָאָרֶץ', 37, True),
+                                             (
+                                             'בְּרֵאשִׁית, בָּרָא אֱלֹהִים, אֵת הַשָּׁמַיִם, וְאֵת הָאָרֶץ.', 37, True),
+                                             ('בְּרֵאשִׁית, בָּרָא אֱלֹהִים, אֵת הַשָּׁמַיִם, וְאֵת הָאָרֶץ.', 60,
+                                              False),
+                                             ('¿Es el comienzo?', 14, True),
+                                             ('¡Al principio!', 12, True),
+                                             ])
 def test_sentence_length_in_characters(sent: str, val: int, excl: bool):
     assert sentence_length_in_characters(sent, exclude_combining=excl) == val
