@@ -1,4 +1,5 @@
 from collections import Counter
+from functools import lru_cache
 from typing import List, Tuple
 from unicodedata import combining
 import re
@@ -52,6 +53,23 @@ def isword(word: str) -> bool:
     return False
 
 
+def get_word_count(text: Text) -> int:
+    """ Total count of words. """
+    return len([t for t in text.nlp() if isword(t.text)])
+
+
+@lru_cache(maxsize=10)
+def get_vocabulary_items(text: Text) -> Tuple[Counter, Counter, dict, int]:
+    vocab = Counter([t.text for t in text.nlp() if isword(t.text)])
+    vocab_i = Counter()
+    for k, v in vocab.items():
+        vocab_i[v] += 1
+    vocab_len = len(vocab)
+    prob_i = {k: v / vocab_len for k, v in vocab_i.items()}
+
+    return vocab, vocab_i, prob_i, vocab_len
+
+
 def word_length(string: str, exclude_combining: bool = True) -> int:
     """ Length of a word, with or without combining characters (diacritics).
     A word is a 'continuous string of graphemes and/or digits.' (Grieve, 2007) """
@@ -92,7 +110,3 @@ def sentence_length_in_characters(sent: str, exclude_combining: bool = True) -> 
     if exclude_combining:
         text = [t for t in text if not combining(t)]
     return len(text)
-
-
-
-

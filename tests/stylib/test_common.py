@@ -1,7 +1,7 @@
 import pytest
 
 from src.stylib import common, config
-from src.stylib.common import isword, word_length, sentence_length_in_characters
+from src.stylib.common import isword, word_length, sentence_length_in_characters, get_vocabulary_items, Text
 
 
 @pytest.mark.parametrize('text', ['This is a parsing test', 'ἐν ἀρχῇ ἐποίησεν ὁ θεὸσ τὸν'])
@@ -45,7 +45,8 @@ def test_word_length(word: str, val: bool):
                                              ('ἐν ἀρχῇ ἐποίησεν ὁ θεὸσ τὸν', 36, False),
                                              ('בְּרֵאשִׁית, בָּרָא אֱלֹהִים, אֵת הַשָּׁמַיִם, וְאֵת הָאָרֶץ', 37, True),
                                              (
-                                             'בְּרֵאשִׁית, בָּרָא אֱלֹהִים, אֵת הַשָּׁמַיִם, וְאֵת הָאָרֶץ.', 37, True),
+                                                     'בְּרֵאשִׁית, בָּרָא אֱלֹהִים, אֵת הַשָּׁמַיִם, וְאֵת הָאָרֶץ.',
+                                                     37, True),
                                              ('בְּרֵאשִׁית, בָּרָא אֱלֹהִים, אֵת הַשָּׁמַיִם, וְאֵת הָאָרֶץ.', 60,
                                               False),
                                              ('¿Es el comienzo?', 14, True),
@@ -53,3 +54,20 @@ def test_word_length(word: str, val: bool):
                                              ])
 def test_sentence_length_in_characters(sent: str, val: int, excl: bool):
     assert sentence_length_in_characters(sent, exclude_combining=excl) == val
+
+
+def test_get_vocabulary_items():
+    text = Text('The The hello The hello 123 321 $.$.')
+    vocab, vocab_i, prob_i, cnt = get_vocabulary_items(text)
+    assert cnt == 4
+    assert vocab['The'] == 3
+    assert vocab['hello'] == 2
+    assert vocab['123'] == 1
+    assert vocab['321'] == 1
+    assert vocab.get('$.$.', 0) == 0
+    assert vocab_i[3] == 1
+    assert vocab_i[2] == 1
+    assert vocab_i[1] == 2
+    assert prob_i[3] == prob_i[2] == 0.25
+    assert prob_i[1] == 0.50
+    assert sum(v for v in prob_i.values()) == 1
