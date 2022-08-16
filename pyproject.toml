@@ -1,3 +1,28 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "stylometry"
+version = "0.0.1"
+authors = [
+  { name="Noah Krieger", email="author@example.com" },
+]
+description = "A collection of stylometry algorithms"
+readme = "README.md"
+license = { file="LICENSE" }
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3.9",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/noahkrieger/stylometry"
+"Bug Tracker" = "https://github.com/noahkrieger/stylometry/issues"
+
+
 [tool.pytest.ini_options]
 pythonpath = [
   ".", "src/stylib"
