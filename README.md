@@ -1,4 +1,4 @@
-# Stylometry
+# Stylometrist
 ## A library for stylometry
 
 
