@@ -6,7 +6,7 @@ import re
 
 import spacy
 
-import config as cnf
+import stylometrist.config as cnf
 
 registry = {}
 

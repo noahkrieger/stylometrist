@@ -1,6 +1,6 @@
 import pytest
 
-from src.stylib.sentence_length import average_sentence_length_in_words, sentence_length_in_words_distribution, \
+from src.stylometrist.sentence_length import average_sentence_length_in_words, sentence_length_in_words_distribution, \
     average_sentence_length_in_characters, \
     sentence_length_in_characters_distribution
 

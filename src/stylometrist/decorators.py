@@ -1,6 +1,6 @@
 from typing import Callable
 
-from src.stylib.common import Text, registry
+from src.stylometrist.common import Text, registry
 
 
 def measurement(f: Callable) -> Callable:

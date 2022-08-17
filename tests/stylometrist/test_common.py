@@ -1,7 +1,7 @@
 import pytest
 
-from src.stylib import common, config
-from src.stylib.common import isword, word_length, sentence_length_in_characters, get_vocabulary_items, Text
+from src.stylometrist import common, config
+from src.stylometrist.common import isword, word_length, sentence_length_in_characters, get_vocabulary_items, Text
 
 
 @pytest.mark.parametrize('text', ['This is a parsing test', 'ἐν ἀρχῇ ἐποίησεν ὁ θεὸσ τὸν'])

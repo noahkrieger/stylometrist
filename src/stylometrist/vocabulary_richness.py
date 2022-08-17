@@ -1,7 +1,7 @@
 import math
 
-from src.stylib.common import Text, get_vocabulary_items, get_word_count
-from src.stylib.decorators import measurement
+from src.stylometrist.common import Text, get_vocabulary_items, get_word_count
+from src.stylometrist.decorators import measurement
 
 
 @measurement

@@ -1,6 +1,9 @@
-Stylometry API
-==============
+Stylometrist API
+================
 
 This is the API documentation so far.
 
-.. automodule:: stylometry
+.. automodule:: stylometrist.common
+    :members:
+    :undoc-members:
+    :show-inheritance:

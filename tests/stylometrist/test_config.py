@@ -1,4 +1,4 @@
-from src.stylib import config
+from src.stylometrist import config
 
 
 def test_config_default():

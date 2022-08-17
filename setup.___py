@@ -1,0 +1,13 @@
+from setuptools import find_packages
+
+setup(
+    name='stylometrist',
+    version='0.0.1',
+    description='A library for stylometry',
+    long_description='long description',
+    author='my name',
+    author_email='my mail',
+    url='https://link_to_github_site.com',
+    packages=find_packages(),
+    license='license'
+)

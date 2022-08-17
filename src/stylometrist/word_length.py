@@ -1,8 +1,8 @@
 from collections import Counter
 from typing import List, Tuple
 
-from src.stylib.common import Text, isword, word_length, distribution, get_word_count
-from src.stylib.decorators import measurement
+from src.stylometrist.common import Text, isword, word_length, distribution, get_word_count
+from src.stylometrist.decorators import measurement
 
 
 @measurement

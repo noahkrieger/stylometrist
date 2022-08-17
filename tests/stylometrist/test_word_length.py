@@ -1,8 +1,8 @@
 import pytest
 
-import src.stylib
-from src.stylib.common import registry
-from src.stylib.word_length import average_word_length, word_length_distribution
+import src.stylometrist
+from src.stylometrist.common import registry
+from src.stylometrist.word_length import average_word_length, word_length_distribution
 
 
 def test_average_word_length():
@@ -21,5 +21,5 @@ def test_word_length_distribution():
 @pytest.mark.parametrize('text', ['This is a parsing test', 'ἐν ἀρχῇ ἐποίησεν ὁ θεὸσ',
                                   'בְּרֵאשִׁית, בָּרָא אֱלֹהִים, אֵת הַשָּׁמַיִם'])
 def test_word_count(text):
-    assert src.stylib.word_length.word_count(text) == 5
+    assert src.stylometrist.word_length.word_count(text) == 5
     assert registry['word_count']
