@@ -3,7 +3,14 @@ Stylometrist API
 
 This is the API documentation so far.
 
-.. automodule:: stylometrist.common
-    :members:
-    :undoc-members:
-    :show-inheritance:
+Contents
+--------
+
+.. toctree::
+
+   api_sentence_length
+   api_decorators
+   api_common
+   api_vocabulary_richness
+
+

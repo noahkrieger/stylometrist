@@ -6,7 +6,7 @@ import re
 
 import spacy
 
-import stylometrist.config as cnf
+from .config import Config
 
 registry = {}
 
@@ -17,8 +17,8 @@ SENTENCE_ENDING_PATTERN = re.compile('^[¿¡]{0,1}(.*?)[.!? \n]*$')
 class Model(object):
     """ SpaCy Model """
 
-    def __init__(self, config: cnf.Config = None):
-        self.config = config if config else cnf.Config()
+    def __init__(self, config: Config = None):
+        self.config = config if config else Config()
 
         self._nlp = spacy.load(self.config.model)
 

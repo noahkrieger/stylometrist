@@ -11,8 +11,16 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('.'))
-sys.path.insert(0, os.path.abspath('../..'))
+# sys.path.insert(0, os.path.abspath('.'))
+# sys.path.insert(0, os.path.abspath('../..'))
+# sys.path.insert(0, os.path.abspath('../src'))
+
+current_dir = os.path.dirname(__file__)
+target_dir = os.path.abspath(os.path.join(current_dir, "../../src"))
+sys.path.insert(0, target_dir)
+
+print(target_dir)
+
 
 
 # -- Project information -----------------------------------------------------
@@ -28,15 +36,20 @@ version = release
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = ["sphinx_rtd_theme",
-    'sphinx.ext.autodoc',
-    'sphinx.ext.autosummary',
-    'sphinx_copybutton',
-    'sphinx_toggleprompt',]
+                'sphinx.ext.autodoc',
+                'sphinx.ext.autosummary',
+                'sphinx_copybutton',
+                'sphinx_toggleprompt',
+                'autodocsumm',
+                'sphinx.ext.mathjax',
+                # 'sphinx.ext.imgmath',
+                "sphinx_math_dollar"
+              ]
 
 templates_path = ['_templates']
 exclude_patterns = []
 
-
+autodoc_default_options = {"autosummary": True}
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
@@ -49,3 +62,14 @@ autosummary_generate = True
 
 # Configure toggleprompt
 toggleprompt_offset_right = 25  # stops toggle and copy buttons overlapping
+
+mathjax3_config = {
+  "tex": {
+    "inlineMath": [['\\(', '\\)']],
+    "displayMath": [["\\[", "\\]"]],
+
+  },
+    'chtml': {
+        'mtextInheritFont': 'true',
+    },
+}

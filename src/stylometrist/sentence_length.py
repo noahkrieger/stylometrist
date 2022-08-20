@@ -3,9 +3,9 @@ from typing import List, Tuple
 
 import numpy as np
 
-from src.stylometrist.common import Text, sentence_length_in_words, distribution, \
+from .common import Text, sentence_length_in_words, distribution, \
     sentence_length_in_characters, range_distribution
-from src.stylometrist.decorators import measurement
+from .decorators import measurement
 
 
 @measurement

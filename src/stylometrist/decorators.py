@@ -1,10 +1,13 @@
 from typing import Callable
+from functools import wraps
 
-from src.stylometrist.common import Text, registry
+from .common import Text, registry
 
 
 def measurement(f: Callable) -> Callable:
     """ Logs measurement to registry and converts text as str to Text instance """
+
+    @wraps(f)  # For some unknown reason, this makes Sphinx automodule work on a decorated function
     def wrapper(*args, **kw):
         registry[f.__name__] = {'function': f}
 
